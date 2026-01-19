@@ -1,0 +1,67 @@
+"use client";
+
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { Category, Member } from "@/lib/types";
+
+// Modal type definitions
+export type ModalType =
+  | { type: "createMember"; data?: Member }
+  | { type: "editMember"; data: { Member: Member } }
+  | { type: "confirmDeleteMember"; data: { Member: Member } }
+  | {
+      type: "confirmDeleteMembers";
+      data: { Members: Member[]; count: number };
+    }
+  | { type: "createCategory"; data?: Category }
+  | { type: "editCategory"; data: { category: Category } }
+  | { type: "confirmDeleteCategory"; data: { category: Category } }
+  | {
+      type: "confirmDeleteCategories";
+      data: { categories: Category[]; count: number };
+    }
+  | { type: "createPromotion" }
+  | {
+      type: "confirmDeletePromotions";
+      data: { promotions: any[]; count: number };
+    }
+  | null;
+
+type ModalTypeNonNull = Exclude<ModalType, null>;
+type OpenModal = (type: ModalTypeNonNull["type"], data?: any) => void;
+
+// Context type
+interface ModalContextType {
+  modal: ModalType;
+  openModal: OpenModal;
+  closeModal: () => void;
+}
+
+// Create context
+const ModalContext = createContext<ModalContextType | undefined>(undefined);
+
+export function useModal() {
+  const context = useContext(ModalContext);
+  if (!context) throw new Error("useModal must be used within a ModalProvider");
+  return context;
+}
+
+interface ModalProviderProps {
+  children: ReactNode;
+}
+
+// Modal provider
+export function ModalProvider({ children }: ModalProviderProps) {
+  const [modal, setModal] = useState<ModalType>(null);
+
+  const openModal: OpenModal = (type, data) => {
+    setModal({ type, data });
+  };
+
+  const closeModal = () => setModal(null);
+
+  return (
+    <ModalContext.Provider value={{ modal, openModal, closeModal }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
