@@ -103,7 +103,7 @@ export default function MembersPage() {
           formData.append(key, file);
         }
       });
-
+      console.log(id,"id")
       const url = id ? `/admin/api/members/${id}` : `/admin/api/members`;
       const method = id ? "PUT" : "POST";
 

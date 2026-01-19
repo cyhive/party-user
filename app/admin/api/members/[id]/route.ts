@@ -6,10 +6,15 @@ import path from "path";
 /* ======================= PUT (UPDATE MEMBER) ======================= */
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const memberId = params.id;
+    const resolvedParams = await params;
+    const memberId = resolvedParams.id;
+
+    console.log("Received memberId:", memberId);
+    console.log("Is valid ObjectId?", ObjectId.isValid(memberId));
+
     if (!ObjectId.isValid(memberId)) {
       return Response.json({ error: "Invalid ID" }, { status: 400 });
     }
