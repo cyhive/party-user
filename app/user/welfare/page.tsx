@@ -1,68 +1,40 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import FeatureCard from "../components/FeatureCard";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-// Feature cards data
-const featureCardsData = [
-  {
-    icon: "🎓",
-    title: "Educational Support",
-    description:
-      "Helping students access quality education through scholarships, learning resources, and academic assistance programs.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "🏥",
-    title: "Medical Care Aid",
-    description:
-      "Providing healthcare support through medical camps, treatment assistance, and access to essential health services.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "💼",
-    title: "Employment Assistance",
-    description:
-      "Supporting job seekers with skill development, career guidance, and access to employment opportunities.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "👩‍👧",
-    title: "Women & Child Welfare",
-    description:
-      "Programs designed to promote safety, education, health, and overall well-being of women and children.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "👴",
-    title: "Senior Citizens",
-    description:
-      "Welfare schemes providing financial support, healthcare assistance, and social security for senior citizens.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "🌾",
-    title: "Agriculture",
-    description:
-      "Support initiatives for farmers and rural communities to improve agricultural productivity and rural infrastructure.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "🏠",
-    title: "Housing",
-    description:
-      "Programs aimed at providing safe housing, clean water, sanitation, and essential public infrastructure.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "♿",
-    title: "Disability Care",
-    description: "Assistants persons disabilities accessible support services.",
-    buttonText: "Learn More",
-  },
-];
+interface WelfareItem {
+  _id: string;
+  title: string;
+  description: string;
+  icon: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export default function WelfarePage() {
+  const [welfareItems, setWelfareItems] = useState<WelfareItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWelfareItems = async () => {
+      try {
+        const res = await fetch("/admin/api/welfare");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setWelfareItems(data);
+      } catch (error) {
+        console.error("Error fetching welfare items:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchWelfareItems();
+  }, []);
   return (
     <div className="w-full">
       <Navbar />
@@ -102,16 +74,26 @@ export default function WelfarePage() {
           <h2 className="text-3xl font-bold text-gray-900 text-left mb-10">
             Welfare Schemes
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-900 ">
-            {featureCardsData.map((card, index) => (
-              <FeatureCard
-                key={index}
-                icon={card.icon}
-                title={card.title}
-                description={card.description}
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">Loading welfare schemes...</p>
+            </div>
+          ) : welfareItems.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-900">
+              {welfareItems.map((item) => (
+                <FeatureCard
+                  key={item._id}
+                  icon={item.icon}
+                  title={item.title}
+                  description={item.description}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No welfare schemes available</p>
+            </div>
+          )}
         </div>
       </section>
 

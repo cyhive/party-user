@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface FeatureCardProps {
   title: string;
   description: string;
@@ -5,6 +7,8 @@ interface FeatureCardProps {
 }
 
 export default function FeatureCard({ title, description, icon }: FeatureCardProps) {
+  const isImageUrl = icon.startsWith("/") || icon.startsWith("http");
+
   return (
     <div 
       className="bg-white border border-gray-100 shadow-2xl shadow-gray-200/50 flex flex-col items-center text-center justify-between p-8 w-full max-w-[392px] min-h-[332px]"
@@ -14,8 +18,18 @@ export default function FeatureCard({ title, description, icon }: FeatureCardPro
       }}
     >
       {/* Icon with soft background */}
-      <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center text-3xl mb-4">
-         {icon}
+      <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center text-3xl mb-4 overflow-hidden">
+        {isImageUrl ? (
+          <Image
+            src={icon}
+            alt={title}
+            width={64}
+            height={64}
+            className="object-cover w-full h-full"
+          />
+        ) : (
+          icon
+        )}
       </div>
 
       <div className="flex-grow">
