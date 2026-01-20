@@ -24,6 +24,8 @@ const navItems = [
   { href: "/admin/categories", icon: Package, label: "Categories" },
   { href: "/admin/customers", icon: Users, label: "Customers" },
   { href: "/admin/promotions", icon: TicketPercent, label: "Promotions" },
+   { href: "/admin/whatwehavedone", icon: TicketPercent, label: "What We Have Done" },
+  { href: "/admin/news", icon: Users, label: "News" },
 ];
 
 function cn(...classes: (string | boolean | undefined)[]) {
