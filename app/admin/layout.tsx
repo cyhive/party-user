@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import { ThemeProvider } from "./components/theme-provider";
+
 import { ModalProvider } from "./context/modal-context";
 import { Toast } from "./components/ui/toast";
 
@@ -32,19 +32,14 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased h-screen overflow-hidden">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+
           
             <ModalProvider>
               {children}
               <Toast />
             </ModalProvider>
           
-        </ThemeProvider>
+
       </body>
     </html>
   );

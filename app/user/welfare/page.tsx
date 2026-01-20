@@ -1,66 +1,11 @@
 import Image from "next/image";
-import FeatureCard from "../components/FeatureCard";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import WelfareAccordion from "../components/accodian";
 
 // Feature cards data
-const featureCardsData = [
-  {
-    icon: "🎓",
-    title: "Educational Support",
-    description:
-      "Helping students access quality education through scholarships, learning resources, and academic assistance programs.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "🏥",
-    title: "Medical Care Aid",
-    description:
-      "Providing healthcare support through medical camps, treatment assistance, and access to essential health services.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "💼",
-    title: "Employment Assistance",
-    description:
-      "Supporting job seekers with skill development, career guidance, and access to employment opportunities.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "👩‍👧",
-    title: "Women & Child Welfare",
-    description:
-      "Programs designed to promote safety, education, health, and overall well-being of women and children.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "👴",
-    title: "Senior Citizens",
-    description:
-      "Welfare schemes providing financial support, healthcare assistance, and social security for senior citizens.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "🌾",
-    title: "Agriculture",
-    description:
-      "Support initiatives for farmers and rural communities to improve agricultural productivity and rural infrastructure.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "🏠",
-    title: "Housing",
-    description:
-      "Programs aimed at providing safe housing, clean water, sanitation, and essential public infrastructure.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "♿",
-    title: "Disability Care",
-    description: "Assistants persons disabilities accessible support services.",
-    buttonText: "Learn More",
-  },
-];
+
 
 export default function WelfarePage() {
   return (
@@ -102,20 +47,10 @@ export default function WelfarePage() {
           <h2 className="text-3xl font-bold text-gray-900 text-left mb-10">
             Welfare Schemes
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-900 ">
-            {featureCardsData.map((card, index) => (
-              <FeatureCard
-                key={index}
-                icon={card.icon}
-                title={card.title}
-                description={card.description}
-              >
-                <button className="mt-6 bg-red-600 text-white px-4 py-2 rounded text-sm font-medium">
-                  {card.buttonText}
-                </button>
-              </FeatureCard>
-            ))}
-          </div>
+          
+        
+             <WelfareAccordion/>
+          
         </div>
       </section>
 
