@@ -6,6 +6,7 @@ import OurMission from "./components/OurMission";
 import WhatWeHaveDone from "./components/WhatWeHaveDone";
 import News from "./components/News";
 import Footer from "./components/Footer";
+import WelfarePage from "./welfare/page"
 
 export default function HomePage() {
   return (
@@ -18,7 +19,9 @@ export default function HomePage() {
       <OurVision />
       <WhatWeHaveDone/>
       <News/>
-      <Footer/>
+      <Footer/>  
+      <WelfarePage/>
+      
     </>
   );
 }
