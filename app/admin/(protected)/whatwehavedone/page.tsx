@@ -12,7 +12,6 @@ import { GalleryItemFormValues } from "../../components/admin/gallery/gallery-fo
 
 export default function UploadsPage() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const { openModal, setModalData } = useModal();
 
   /* ===================== FETCH ITEMS ===================== */

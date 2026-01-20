@@ -72,10 +72,10 @@ export default function WelfarePage() {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
           {/* Left Content */}
           <div>
-            <h1 className="font-['Inter'] font-extrabold text-[64px] leading-[1] tracking-normal text-gray-900">
+            <h1 className="font-['Inter'] font-extrabold text-[64px] leading-none tracking-normal text-gray-900">
               Welfare Schemes <br /> for Public Well-Being
             </h1>
-            <p className="mt-6 max-w-lg font-normal text-[16px] md:text-[20px] leading-[1.4] md:leading-[1] tracking-normal text-gray-600">
+            <p className="mt-6 max-w-lg font-normal text-[16px] md:text-[20px] leading-[1.4] md:leading-none tracking-normal text-gray-600">
               Discover government and party-led welfare initiatives designed to
               support education, healthcare, livelihoods, and social security for
               eligible citizens.
@@ -109,11 +109,7 @@ export default function WelfarePage() {
                 icon={card.icon}
                 title={card.title}
                 description={card.description}
-              >
-                <button className="mt-6 bg-red-600 text-white px-4 py-2 rounded text-sm font-medium">
-                  {card.buttonText}
-                </button>
-              </FeatureCard>
+              />
             ))}
           </div>
         </div>
@@ -121,7 +117,7 @@ export default function WelfarePage() {
 
       {/* Contact Us Section */}
 
-      <section className="relative w-full h-[600px] flex justify-center items-center bg-white">
+      <section className="relative w-full h-150 flex justify-center items-center bg-white">
         {/* Background border-like image (inside only) */}
         <div className="relative border-0 border-red-600 rounded-xl w-[75%] h-[75%] overflow-hidden">
           <Image
