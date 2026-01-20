@@ -1,20 +1,50 @@
 "use client";
 
-import Image from "next/image";
+import { useEffect, useState } from "react";
 
-const works = [
-  { id: 1, src: "/image 6.png", alt: "Inauguration ceremony" },
-  { id: 2, src: "/image 8.png", alt: "Ambulance service support" },
-  { id: 3, src: "/image 10.png", alt: "DYFI blood donation activity" },
-  { id: 4, src: "/image 7.png", alt: "CPI(M) Kaithodu Branch" },
-  { id: 5, src: "/image 9.png", alt: "Community outreach program" },
-];
+interface GalleryItem {
+  _id: string;
+  title: string;
+  description: string;
+  images: string[];
+}
 
 export default function WhatWeHaveDone() {
+  const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const res = await fetch("/api/gallery");
+        const data = await res.json();
+        if (res.ok && Array.isArray(data)) {
+          setGallery(data);
+        } else {
+          console.error("Failed to fetch gallery or data is not an array:", data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch gallery", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGallery();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-16 text-center text-gray-500">
+        Loading gallery...
+      </section>
+    );
+  }
+
   return (
     <section className="bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        
+
         {/* Heading */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
@@ -29,21 +59,28 @@ export default function WhatWeHaveDone() {
 
         {/* Image Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {works.map((item) => (
-            <div
-              key={item.id}
-              className="relative w-full h-[260px] rounded-2xl overflow-hidden shadow-sm"
-            >
-              <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          ))}
+          {gallery.length > 0 ? (
+            gallery.map((item) =>
+              item.images.map((img, index) => (
+                <div
+                  key={`${item._id}-${index}`}
+                  className="relative w-full h-[260px] rounded-2xl overflow-hidden shadow-sm"
+                >
+                  <img
+                    src={img}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))
+            )
+          ) : (
+            <p className="col-span-full text-center text-gray-500">
+              No gallery items found.
+            </p>
+          )}
         </div>
+
       </div>
     </section>
   );
