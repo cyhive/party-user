@@ -6,61 +6,62 @@ import Footer from "../components/Footer";
 // Feature cards data
 const featureCardsData = [
   {
-    icon: "🎓",
+    icon: "/education-cap.png",
     title: "Educational Support",
     description:
       "Helping students access quality education through scholarships, learning resources, and academic assistance programs.",
     buttonText: "Learn More",
   },
   {
-    icon: "🏥",
+    icon: "/box-healthcare.png",
     title: "Medical Care Aid",
     description:
       "Providing healthcare support through medical camps, treatment assistance, and access to essential health services.",
     buttonText: "Learn More",
   },
   {
-    icon: "💼",
+    icon: "/employment-deal.png",
     title: "Employment Assistance",
     description:
       "Supporting job seekers with skill development, career guidance, and access to employment opportunities.",
     buttonText: "Learn More",
   },
   {
-    icon: "👩‍👧",
+    icon: "/image 16.png",
     title: "Women & Child Welfare",
     description:
       "Programs designed to promote safety, education, health, and overall well-being of women and children.",
     buttonText: "Learn More",
   },
   {
-    icon: "👴",
+    icon: "/image 17.png",
     title: "Senior Citizens",
     description:
       "Welfare schemes providing financial support, healthcare assistance, and social security for senior citizens.",
     buttonText: "Learn More",
   },
   {
-    icon: "🌾",
+    icon: "/image 18.png",
     title: "Agriculture",
     description:
       "Support initiatives for farmers and rural communities to improve agricultural productivity and rural infrastructure.",
     buttonText: "Learn More",
   },
   {
-    icon: "🏠",
+    icon: "/image 19.png",
     title: "Housing",
     description:
       "Programs aimed at providing safe housing, clean water, sanitation, and essential public infrastructure.",
     buttonText: "Learn More",
   },
   {
-    icon: "♿",
+    icon: "/image 20.png",
     title: "Disability Care",
     description: "Assistants persons disabilities accessible support services.",
     buttonText: "Learn More",
   },
 ];
+
 
 export default function WelfarePage() {
   return (
@@ -68,33 +69,47 @@ export default function WelfarePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="w-full bg-white py-16">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
-          {/* Left Content */}
-          <div>
-            <h1 className="font-['Inter'] font-extrabold text-[64px] leading-[1] tracking-normal text-gray-900">
-              Welfare Schemes <br /> for Public Well-Being
-            </h1>
-            <p className="mt-6 max-w-lg font-normal text-[16px] md:text-[20px] leading-[1.4] md:leading-[1] tracking-normal text-gray-600">
-              Discover government and party-led welfare initiatives designed to
-              support education, healthcare, livelihoods, and social security for
-              eligible citizens.
-            </p>
-          </div>
+    <section className="relative w-full py-16 overflow-hidden bg-white">
+  {/* Map Background */}
+  <div className="absolute inset-0 z-0">
+    <Image
+      src="/MAP.png"
+      alt="Map Background"
+      fill
+      className="object-cover opacity-80"
+      priority
+    />
+  </div>
 
-          {/* Right Image */}
-          <div className="flex justify-center">
-            <Image
-              src="/image 11.png"
-              alt="Welfare Schemes"
-              width={500}
-              height={400}
-              className="object-contain"
-              priority
-            />
-          </div>
-        </div>
-      </section>
+  <div className="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+    {/* Left Content */}
+    <div>
+      <h1 className="font-['Inter'] font-extrabold text-[42px] sm:text-[52px] md:text-[64px] leading-[1.1] tracking-normal text-gray-900">
+        Welfare Schemes <br /> for Public Well-Being
+      </h1>
+
+      <p className="mt-6 max-w-lg text-[16px] md:text-[20px] leading-[1.4] text-gray-600">
+        Discover government and party-led welfare initiatives designed to
+        support education, healthcare, livelihoods, and social security for
+        eligible citizens.
+      </p>
+    </div>
+
+    {/* Right Image */}
+    <div className="flex justify-center">
+      <Image
+        src="/image 11.png"
+        alt="Welfare Schemes"
+        width={500}
+        height={400}
+        className="object-contain w-[280px] sm:w-[360px] md:w-[500px]"
+        priority
+      />
+    </div>
+  </div>
+</section>
+
+
 
       {/* Feature Cards Section */}
       <section className="w-full bg-gray-50 py-16">
@@ -106,7 +121,15 @@ export default function WelfarePage() {
             {featureCardsData.map((card, index) => (
               <FeatureCard
                 key={index}
-                icon={card.icon}
+                icon={
+                  <Image
+                    src={card.icon}
+                    alt={card.title}
+                    width={48}
+                    height={48}
+                    className="mx-auto mb-4"
+                  />
+                }
                 title={card.title}
                 description={card.description}
               >
@@ -115,6 +138,7 @@ export default function WelfarePage() {
                 </button>
               </FeatureCard>
             ))}
+
           </div>
         </div>
       </section>

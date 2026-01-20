@@ -11,8 +11,8 @@ export default function Navbar() {
 
         {/* Navigation */}
         <nav className="hidden md:flex gap-8 text-sm font-medium">
-          <a href="#" className="text-red-600">Home</a>
-          <a href="#" className="text-red-300" >Welfare Scheme</a>
+          <a href="/user" className="text-red-600">Home</a>
+          <a href="/user/welfare" className="text-red-300" >Welfare Scheme</a>
           <a href="#" className="text-red-300">About us</a>
           <a href="#" className="text-red-300">News & Updates</a>
         </nav>

@@ -1,12 +1,13 @@
-import Navbar from "././components/Navbar";
-import Hero from "././components/Hero";
-import OurVision from "./components/OurVision";
-import Aboutus from "./components/Aboutus";
-import OurMission from "./components/OurMission";
-import WhatWeHaveDone from "./components/WhatWeHaveDone";
-import News from "./components/News";
-import Footer from "./components/Footer";
-import WelfarePage from "./user/welfare/page"
+import AboutUs from "./user/components/Aboutus";
+import Footer from "./user/components/Footer";
+import Hero from "./user/components/Hero";
+import Navbar from "./user/components/Navbar";
+import NewsPage from "./user/components/News";
+import OurMission from "./user/components/OurMission";
+import OurVision from "./user/components/OurVision";
+import WhatWeHaveDone from "./user/components/WhatWeHaveDone";
+import WelfarePage from "./user/welfare/page";
+
 
 export default function HomePage() {
   return (
@@ -14,11 +15,11 @@ export default function HomePage() {
       <Navbar />
       <Hero />
     
-      <Aboutus/>
+      <AboutUs/>
       <OurMission/>
       <OurVision />
       <WhatWeHaveDone/>
-      <News/>
+      <NewsPage/>
       <Footer/>  
       <WelfarePage/>
       
