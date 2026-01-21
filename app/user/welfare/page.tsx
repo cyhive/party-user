@@ -1,99 +1,53 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import FeatureCard from "../components/FeatureCard";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import WelfareAccordion from "../components/accodian";
 
 // Feature cards data
-const featureCardsData = [
-  {
-    icon: "/education-cap.png",
-    title: "Educational Support",
-    description:
-      "Helping students access quality education through scholarships, learning resources, and academic assistance programs.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "/box-healthcare.png",
-    title: "Medical Care Aid",
-    description:
-      "Providing healthcare support through medical camps, treatment assistance, and access to essential health services.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "/employment-deal.png",
-    title: "Employment Assistance",
-    description:
-      "Supporting job seekers with skill development, career guidance, and access to employment opportunities.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "/image 16.png",
-    title: "Women & Child Welfare",
-    description:
-      "Programs designed to promote safety, education, health, and overall well-being of women and children.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "/image 17.png",
-    title: "Senior Citizens",
-    description:
-      "Welfare schemes providing financial support, healthcare assistance, and social security for senior citizens.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "/image 18.png",
-    title: "Agriculture",
-    description:
-      "Support initiatives for farmers and rural communities to improve agricultural productivity and rural infrastructure.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "/image 19.png",
-    title: "Housing",
-    description:
-      "Programs aimed at providing safe housing, clean water, sanitation, and essential public infrastructure.",
-    buttonText: "Learn More",
-  },
-  {
-    icon: "/image 20.png",
-    title: "Disability Care",
-    description: "Assistants persons disabilities accessible support services.",
-    buttonText: "Learn More",
-  },
-];
 
 
 export default function WelfarePage() {
+  const [welfareItems, setWelfareItems] = useState<WelfareItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWelfareItems = async () => {
+      try {
+        const res = await fetch("/admin/api/welfare");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setWelfareItems(data);
+      } catch (error) {
+        console.error("Error fetching welfare items:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchWelfareItems();
+  }, []);
   return (
     <div className="w-full">
       <Navbar />
 
       {/* Hero Section */}
-    <section className="relative w-full py-16 overflow-hidden bg-white">
-  {/* Map Background */}
-  <div className="absolute inset-0 z-0">
-    <Image
-      src="/MAP.png"
-      alt="Map Background"
-      fill
-      className="object-cover opacity-80"
-      priority
-    />
-  </div>
-
-  <div className="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
-    {/* Left Content */}
-    <div>
-      <h1 className="font-['Inter'] font-extrabold text-[42px] sm:text-[52px] md:text-[64px] leading-[1.1] tracking-normal text-gray-900">
-        Welfare Schemes <br /> for Public Well-Being
-      </h1>
-
-      <p className="mt-6 max-w-lg text-[16px] md:text-[20px] leading-[1.4] text-gray-600">
-        Discover government and party-led welfare initiatives designed to
-        support education, healthcare, livelihoods, and social security for
-        eligible citizens.
-      </p>
-    </div>
+      <section className="w-full bg-white py-16">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+          {/* Left Content */}
+          <div>
+            <h1 className="font-['Inter'] font-extrabold text-[64px] leading-none tracking-normal text-gray-900">
+              Welfare Schemes <br /> for Public Well-Being
+            </h1>
+            <p className="mt-6 max-w-lg font-normal text-[16px] md:text-[20px] leading-[1.4] md:leading-none tracking-normal text-gray-600">
+              Discover government and party-led welfare initiatives designed to
+              support education, healthcare, livelihoods, and social security for
+              eligible citizens.
+            </p>
+          </div>
 
     {/* Right Image */}
     <div className="flex justify-center">
@@ -117,35 +71,16 @@ export default function WelfarePage() {
           <h2 className="text-3xl font-bold text-gray-900 text-left mb-10">
             Welfare Schemes
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-900 ">
-            {featureCardsData.map((card, index) => (
-              <FeatureCard
-                key={index}
-                icon={
-                  <Image
-                    src={card.icon}
-                    alt={card.title}
-                    width={48}
-                    height={48}
-                    className="mx-auto mb-4"
-                  />
-                }
-                title={card.title}
-                description={card.description}
-              >
-                <button className="mt-6 bg-red-600 text-white px-4 py-2 rounded text-sm font-medium">
-                  {card.buttonText}
-                </button>
-              </FeatureCard>
-            ))}
-
-          </div>
+          
+        
+             <WelfareAccordion/>
+          
         </div>
       </section>
 
       {/* Contact Us Section */}
 
-      <section className="relative w-full h-[600px] flex justify-center items-center bg-white">
+      <section className="relative w-full h-150 flex justify-center items-center bg-white">
         {/* Background border-like image (inside only) */}
         <div className="relative border-0 border-red-600 rounded-xl w-[75%] h-[75%] overflow-hidden">
           <Image

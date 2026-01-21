@@ -1,82 +1,115 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import FeatureCard from "./FeatureCard";
+import FeatureCard from "../components/FeatureCard";
+
+interface WelfareItem {
+  _id: string;
+  title: string;
+  description: string;
+  icon: string;
+  createdAt?: string;
+}
 
 export default function Hero() {
+  const [features, setFeatures] = useState<WelfareItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  /* ================= FETCH WELFARE ================= */
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const res = await fetch("/admin/api/welfare");
+        if (!res.ok) throw new Error("Failed to fetch welfare items");
+        const data = await res.json();
+        setFeatures(data || []);
+      } catch (error) {
+        console.error("Error fetching welfare features:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeatures();
+  }, []);
+
   return (
-    <main className="bg-white border-b-2 border-blue-500 overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-4 pb-10 grid md:grid-cols-2 gap-4 items-center">
-        
-        {/* Text */}
-        <div className="relative z-10">
-          <h1 className="mt-0 text-4xl md:text-5xl font-extrabold leading-[1.1] text-gray-900">
-            <span className="block whitespace-nowrap">
-              Working for the Welfare
-            </span>
-            <span className="block whitespace-nowrap">
-              of Every Citizen
-            </span>
-          </h1>
-
-          <p className="mt-8 text-gray-600 max-w-lg">
-            We work at the ground level to connect citizens with welfare schemes
-            that improve education, healthcare, employment, and dignity of life.
-          </p>
-
-          <button className="mt-8 bg-red-600 hover:bg-red-700 transition text-white px-6 py-3 rounded-md font-semibold">
-            Explore Our Scheme
-          </button>
+    <main className="bg-white min-h-screen relative overflow-x-hidden">
+      {/* ================= BACKGROUND FLAG ================= */}
+      <div className="absolute top-0 right-0 w-full md:w-[75%] h-[600px] lg:h-[850px] z-0 pointer-events-none">
+        <div className="relative w-full h-full">
+          <Image
+            src="/flag.png"
+            alt="Background Flag"
+            fill
+            className="object-cover object-right"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/40 to-transparent" />
         </div>
+      </div>
 
-        {/* Image Section */}
-        <div className="relative flex justify-center items-center">
-          
-          {/* Flag Background */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-0">
-            <Image
-              src="/flag.png"
-              alt="Indian Flag Background"
-              width={520}
-              height={360}
-              className="opacity-90"
-              priority
-            />
+      {/* ================= HERO CONTENT ================= */}
+      <section className="relative z-10 max-w-7xl mx-auto px-6 pt-16 md:pt-24 pb-48 lg:pb-80">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* LEFT */}
+          <div className="relative z-20 flex flex-col items-start lg:min-h-[400px]">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] text-gray-900 tracking-tight">
+              Working for the <br />
+              Welfare of <br />
+              Every Citizen
+            </h1>
+
+            <p className="mt-8 text-gray-600 max-w-md text-lg lg:text-xl leading-relaxed">
+              We work at the ground level to connect citizens with welfare schemes
+              that improve education, healthcare, employment, and dignity of life.
+            </p>
+
+            <div className="mt-5 mb-5 lg:mb-0">
+              <button className="bg-[#e32626] hover:bg-red-700 transition-all text-white px-10 py-4 rounded-xl font-bold text-lg shadow-xl shadow-red-200 active:scale-95">
+                Explore Our Scheme
+              </button>
+            </div>
           </div>
 
-          {/* Person Image */}
-          <div className="relative z-10">
-            <Image
-              src="/person.png"
-              alt="Leader"
-              width={420}
-              height={420}
-              priority
-            />
+          {/* RIGHT IMAGE */}
+          <div className="relative flex justify-center lg:justify-end items-end h-[400px] md:h-[500px] lg:h-[650px] z-10">
+            <div className="relative w-full h-full max-w-[500px]">
+              <Image
+                src="/person.png"
+                alt="Leader"
+                fill
+                className="object-contain object-bottom"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Feature Cards */}
-      <section className="max-w-7xl mx-auto px-6 pb-16 grid md:grid-cols-3 gap-5 text-gray-900">
-        <FeatureCard
-          icon="🎓"
-          title="Educational Support"
-          description="Helping students access quality education through scholarships, learning resources, and academic assistance programs."
-        />
-
-        <FeatureCard
-          icon="➕"
-          title="Medical Care Aid"
-          description="Providing healthcare support through medical camps, treatment assistance, and access to essential health services."
-        />
-
-        <FeatureCard
-          icon="🤝"
-          title="Employment Assistance"
-          description="Supporting job seekers with skill development, career guidance, and access to employment opportunities."
-        />
+      {/* ================= FEATURE CARDS ================= */}
+      <section className="relative z-30 max-w-7xl mx-auto px-6 -mt-24 md:-mt-40 lg:-mt-80 pb-20">
+        {loading ? (
+          <div className="text-center py-12 text-gray-500">
+            Loading welfare schemes...
+          </div>
+        ) : features.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            {features.slice(0, 3).map((item) => (
+              <FeatureCard
+                key={item._id}
+                icon={item.icon}
+                title={item.title}
+                description={item.description}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-gray-500">
+            No welfare schemes available
+          </div>
+        )}
       </section>
     </main>
   );

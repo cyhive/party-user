@@ -1,26 +1,47 @@
-type FeatureCardProps = {
-  icon: string;
+import Image from "next/image";
+
+interface FeatureCardProps {
   title: string;
   description: string;
-};
+  icon: string;
+}
 
-export default function FeatureCard({
-  icon,
-  title,
-  description,
-}: FeatureCardProps) {
+export default function FeatureCard({ title, description, icon }: FeatureCardProps) {
+  const isImageUrl = icon.startsWith("/") || icon.startsWith("http");
+
   return (
-    <div className="bg-white border border-gray-200  rounded-xl p-8 text-center shadow-sm hover:shadow-md transition">
+    <div 
+      className="bg-white border border-gray-100 shadow-2xl shadow-gray-200/50 flex flex-col items-center text-center justify-between p-8 w-full max-w-[392px] min-h-[332px]"
+      style={{
+        borderRadius: '15px',
+        opacity: 1,
+      }}
+    >
+      {/* Icon with soft background */}
+      <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center text-3xl mb-4 overflow-hidden">
+        {isImageUrl ? (
+          <Image
+            src={icon}
+            alt={title}
+            width={64}
+            height={64}
+            className="object-cover w-full h-full"
+          />
+        ) : (
+          icon
+        )}
+      </div>
 
-      <div className="text-4xl mb-4">{icon}</div>
+      <div className="flex-grow">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 tracking-tight">
+          {title}
+        </h3>
+        <p className="text-gray-500 text-sm md:text-base leading-relaxed px-2">
+          {description}
+        </p>
+      </div>
 
-      <h3 className="text-lg font-semibold">{title}</h3>
-
-      <p className="text-gray-600 text-sm mt-3">
-        {description}
-      </p>
-
-      <button className="mt-6 bg-red-600 text-white px-4 py-2 rounded text-sm font-medium">
+      <button className="mt-6 bg-[#e32626] hover:bg-red-700 text-white px-8 py-2.5 rounded-lg font-bold text-sm transition-all hover:shadow-lg active:scale-95">
         Learn More
       </button>
     </div>

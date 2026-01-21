@@ -1,39 +1,40 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Category, Member } from "@/lib/types";
+import { Category, Member } from "../lib/types";
 
-// Modal type definitions
-export type ModalType =
-  | { type: "createMember"; data?: Member }
-  | { type: "editMember"; data: { Member: Member } }
-  | { type: "confirmDeleteMember"; data: { Member: Member } }
-  | {
-      type: "confirmDeleteMembers";
-      data: { Members: Member[]; count: number };
-    }
-  | { type: "createCategory"; data?: Category }
-  | { type: "editCategory"; data: { category: Category } }
-  | { type: "confirmDeleteCategory"; data: { category: Category } }
-  | {
-      type: "confirmDeleteCategories";
-      data: { categories: Category[]; count: number };
-    }
-  | { type: "createPromotion" }
-  | {
-      type: "confirmDeletePromotions";
-      data: { promotions: any[]; count: number };
-    }
-  | null;
+// Modal state management
+interface ModalState {
+  createMember: boolean;
+  deleteMember: boolean;
+  createCategory: boolean;
+  deleteCategory: boolean;
+  createPromotion: boolean;
+  deletePromotion: boolean;
+  createGalleryItem: boolean;
+  deleteGalleryItem: boolean;
+  createWelfareItem: boolean;
+  deleteWelfareItem: boolean;
+}
 
-type ModalTypeNonNull = Exclude<ModalType, null>;
-type OpenModal = (type: ModalTypeNonNull["type"], data?: any) => void;
+interface ModalDataState {
+  editingMember: Member | null;
+  selectedMemberIds: string[];
+  editingCategory: Category | null;
+  selectedCategoryIds: string[];
+  editingGalleryItem: Record<string, unknown> | null;
+  selectedGalleryItemIds: string[];
+  editingWelfareItem: Record<string, unknown> | null;
+  selectedWelfareItemIds: string[];
+}
 
 // Context type
 interface ModalContextType {
-  modal: ModalType;
-  openModal: OpenModal;
-  closeModal: () => void;
+  modals: ModalState;
+  modalData: ModalDataState;
+  openModal: (modalName: keyof ModalState) => void;
+  closeModal: (modalName?: keyof ModalState) => void;
+  setModalData: (key: keyof ModalDataState, value: unknown) => void;
 }
 
 // Create context
@@ -51,16 +52,45 @@ interface ModalProviderProps {
 
 // Modal provider
 export function ModalProvider({ children }: ModalProviderProps) {
-  const [modal, setModal] = useState<ModalType>(null);
+  const [modals, setModals] = useState<ModalState>({
+    createMember: false,
+    deleteMember: false,
+    createCategory: false,
+    deleteCategory: false,
+    createPromotion: false,
+    deletePromotion: false,
+    createGalleryItem: false,
+    deleteGalleryItem: false,
+    createWelfareItem: false,
+    deleteWelfareItem: false,
+  });
 
-  const openModal: OpenModal = (type, data) => {
-    setModal({ type, data });
+  const [modalData, setModalDataState] = useState<ModalDataState>({
+    editingMember: null,
+    selectedMemberIds: [],
+    editingCategory: null,
+    selectedCategoryIds: [],
+    editingGalleryItem: null,
+    selectedGalleryItemIds: [],
+    editingWelfareItem: null,
+    selectedWelfareItemIds: [],
+  });
+
+  const openModal = (modalName: keyof ModalState) => {
+    setModals((prev) => ({ ...prev, [modalName]: true }));
   };
 
-  const closeModal = () => setModal(null);
+  const closeModal = (modalName?: keyof ModalState) => {
+    if (!modalName) return;
+    setModals((prev) => ({ ...prev, [modalName]: false }));
+  };
+
+  const setModalData = (key: keyof ModalDataState, value: unknown) => {
+    setModalDataState((prev) => ({ ...prev, [key]: value }));
+  };
 
   return (
-    <ModalContext.Provider value={{ modal, openModal, closeModal }}>
+    <ModalContext.Provider value={{ modals, modalData, openModal, closeModal, setModalData }}>
       {children}
     </ModalContext.Provider>
   );
