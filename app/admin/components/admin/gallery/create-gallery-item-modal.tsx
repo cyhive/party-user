@@ -3,7 +3,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../components/ui/dialog";
 import { useModal } from "../../../context/modal-context";
 import { GalleryItemForm, GalleryItemFormValues } from "./gallery-form";
-import { useEffect } from "react";
 
 interface CreateGalleryItemModalProps {
   onSave: (data: GalleryItemFormValues, pendingFiles?: File[], id?: string) => void;
@@ -19,7 +18,7 @@ export function CreateGalleryItemModal({ onSave }: CreateGalleryItemModalProps) 
   };
 
   const handleSave = (data: GalleryItemFormValues, pendingFiles?: File[]) => {
-    onSave(data, pendingFiles, isEditing?._id);
+    onSave(data, pendingFiles, (isEditing as Record<string, unknown> | null)?._id as string | undefined);
     handleClose();
   };
 
@@ -34,7 +33,7 @@ export function CreateGalleryItemModal({ onSave }: CreateGalleryItemModalProps) 
         {isOpen && (
           <GalleryItemForm
             onSubmit={handleSave}
-            initialData={isEditing}
+            initialData={isEditing as { _id: string; title: string; description?: string; images: string[] } | null}
             onCancel={handleClose}
           />
         )}

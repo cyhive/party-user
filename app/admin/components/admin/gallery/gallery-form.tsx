@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Textarea } from "../../../components/ui/textarea";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
@@ -49,11 +50,12 @@ function ImageSection({
       {images.length > 0 && (
         <div className="grid grid-cols-3 gap-2 mb-2">
           {images.map((img) => (
-            <div key={img} className="relative">
-              <img
+            <div key={img} className="relative h-20">
+              <Image
                 src={img}
                 alt="preview"
-                className="w-full h-20 object-cover rounded-md border"
+                fill
+                className="object-cover rounded-md border"
               />
               <button
                 type="button"
