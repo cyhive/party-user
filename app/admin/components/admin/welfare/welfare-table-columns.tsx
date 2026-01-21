@@ -11,6 +11,7 @@ export interface WelfareItem {
   _id: string;
   title: string;
   description?: string;
+  content?: string; // 1. Added content field to interface
   icon?: string;
   createdAt: string;
   updatedAt?: string;
@@ -20,6 +21,11 @@ interface CreateWelfareColumnsOptions {
   onEdit: (item: WelfareItem) => void;
   onDelete: (id: string) => void;
 }
+
+/* Helper function to strip HTML tags for table preview */
+const stripHtml = (html: string) => {
+  return html.replace(/<[^>]*>?/gm, "");
+};
 
 /* ========== IMAGE PREVIEW CELL ========== */
 function IconCell({ icon, title }: { icon?: string; title: string }) {
@@ -35,15 +41,9 @@ function IconCell({ icon, title }: { icon?: string; title: string }) {
         className="relative h-12 w-12 rounded-md border overflow-hidden cursor-pointer hover:opacity-75"
         onClick={() => setOpen(true)}
       >
-        <Image
-          src={icon}
-          alt={title}
-          fill
-          className="object-cover"
-        />
+        <Image src={icon} alt={title} fill className="object-cover" />
       </div>
 
-      {/* Image Preview Modal */}
       {open && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
@@ -55,17 +55,12 @@ function IconCell({ icon, title }: { icon?: string; title: string }) {
           >
             <button
               onClick={() => setOpen(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 font-bold"
             >
               ✕
             </button>
             <div className="relative h-96 w-96">
-              <Image
-                src={icon}
-                alt={title}
-                fill
-                className="object-contain"
-              />
+              <Image src={icon} alt={title} fill className="object-contain" />
             </div>
           </div>
         </div>
@@ -120,15 +115,13 @@ export function createWelfareColumns({
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue("title")}</div>,
+      cell: ({ row }) => <div className="font-medium">{row.getValue("title")}</div>,
     },
     {
       accessorKey: "description",
@@ -136,8 +129,22 @@ export function createWelfareColumns({
       cell: ({ row }) => {
         const description = row.getValue("description") as string;
         return (
-          <div className="max-w-xs truncate text-sm">
+          <div className="max-w-[150px] truncate text-xs text-muted-foreground">
             {description || "-"}
+          </div>
+        );
+      },
+    },
+    // 2. NEW CONTENT COLUMN
+    {
+      accessorKey: "content",
+      header: "Full Details",
+      cell: ({ row }) => {
+        const rawContent = (row.getValue("content") as string) || "";
+        const cleanText = stripHtml(rawContent);
+        return (
+          <div className="max-w-[200px] truncate text-sm italic text-gray-500">
+            {cleanText || "-"}
           </div>
         );
       },
@@ -147,7 +154,7 @@ export function createWelfareColumns({
       header: "Created",
       cell: ({ row }) => {
         const date = new Date(row.getValue("createdAt") as string);
-        return <div>{date.toLocaleDateString()}</div>;
+        return <div className="text-xs whitespace-nowrap">{date.toLocaleDateString()}</div>;
       },
     },
     {
@@ -156,11 +163,7 @@ export function createWelfareColumns({
         const item = row.original;
         return (
           <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => onEdit(item)}
-            >
+            <Button size="sm" variant="outline" onClick={() => onEdit(item)}>
               Edit
             </Button>
             <Button

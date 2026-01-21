@@ -56,43 +56,48 @@ export default function AdminWelfarePage() {
   };
 
   /* ================= SAVE ================= */
-  const handleSave = async (
-    data: WelfareFormValues,
-    iconFile?: File,
-    id?: string
-  ) => {
-    try {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("description", data.description || "");
-      if (iconFile) {
-        formData.append("icon", iconFile);
-      }
 
-      const url = id
-        ? `/admin/api/welfare?id=${id}`
-        : "/admin/api/welfare";
+const handleSave = async (
+  data: WelfareFormValues,
+  iconFile?: File,
+  id?: string
+) => {
+  try {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description || "");
+    
+    // ADD THIS LINE BELOW:
+    formData.append("content", data.content || ""); 
 
-      const method = id ? "PUT" : "POST";
-
-      const res = await fetch(url, { method, body: formData });
-      if (!res.ok) throw new Error();
-
-      const saved = await res.json();
-
-      setItems((prev) =>
-        id
-          ? prev.map((i) => (i._id === id ? saved : i))
-          : [saved, ...prev]
-      );
-
-      showToast.success(id ? "Welfare updated" : "Welfare created");
-      closeModal("createWelfareItem");
-      setModalData("editingWelfareItem", null);
-    } catch {
-      showToast.error("Failed to save welfare");
+    if (iconFile) {
+      formData.append("icon", iconFile);
     }
-  };
+
+    const url = id
+      ? `/admin/api/welfare?id=${id}`
+      : "/admin/api/welfare";
+
+    const method = id ? "PUT" : "POST";
+
+    const res = await fetch(url, { method, body: formData });
+    if (!res.ok) throw new Error();
+
+    const saved = await res.json();
+
+    setItems((prev) =>
+      id
+        ? prev.map((i) => (i._id === id ? saved : i))
+        : [saved, ...prev]
+    );
+
+    showToast.success(id ? "Welfare updated" : "Welfare created");
+    closeModal("createWelfareItem");
+    setModalData("editingWelfareItem", null);
+  } catch {
+    showToast.error("Failed to save welfare");
+  }
+};
 
   /* ================= DELETE ================= */
   const handleDelete = (id: string) => {

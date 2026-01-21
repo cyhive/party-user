@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
     /* --------TEXT FIELDS---------- */
     const title = formData.get("title") as string;
     const description = (formData.get("description") as string) || "";
+    const content = (formData.get("content") as string) || ""; // Added content
 
     if (!title || !iconUrl) {
       return NextResponse.json(
@@ -70,6 +71,7 @@ export async function POST(req: NextRequest) {
     const result = await collection.insertOne({
       title,
       description,
+      content, // Added to DB
       icon: iconUrl,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -79,6 +81,7 @@ export async function POST(req: NextRequest) {
       _id: result.insertedId.toString(),
       title,
       description,
+      content, // Included in response
       icon: iconUrl,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -143,10 +146,12 @@ export async function PUT(req: NextRequest) {
     /* --------TEXT FIELDS---------- */
     const title = (formData.get("title") as string) || existingItem.title;
     const description = (formData.get("description") as string) || existingItem.description;
+    const content = (formData.get("content") as string) || existingItem.content || ""; // Added content
 
     const updateData: Record<string, unknown> = {
       title,
       description,
+      content, // Added to update object
       icon: iconUrl,
       updatedAt: new Date(),
     };
@@ -160,6 +165,7 @@ export async function PUT(req: NextRequest) {
       _id: id,
       title,
       description,
+      content, // Included in response
       icon: iconUrl,
       createdAt: existingItem.createdAt,
       updatedAt: new Date(),

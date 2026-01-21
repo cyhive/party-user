@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import WelfareAccordion from "../components/accodian";
+import WelfareAccordion, { WelfareItem } from "../components/accodian";
 
 // Feature cards data
 
@@ -71,7 +71,13 @@ export default function WelfarePage() {
           </h2>
           
         
-             <WelfareAccordion/>
+            {isLoading ? (
+            <div className="flex justify-center p-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+            </div>
+          ) : (
+            <WelfareAccordion items={welfareItems} />
+          )}
           
         </div>
       </section>
