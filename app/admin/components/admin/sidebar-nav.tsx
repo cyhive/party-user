@@ -19,11 +19,10 @@ import { Skeleton } from "../../components/ui/skeleton";
 
 const navItems = [
   { href: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/admin/orders", icon: ShoppingCart, label: "Orders" },
+  
   { href: "/admin/members", icon: Package, label: "Members" },
-  { href: "/admin/categories", icon: Package, label: "Categories" },
-  { href: "/admin/customers", icon: Users, label: "Customers" },
-  { href: "/admin/promotions", icon: TicketPercent, label: "Promotions" },
+  
+  
    { href: "/admin/whatwehavedone", icon: TicketPercent, label: "What We Have Done" },
   { href: "/admin/news", icon: Users, label: "News" },
   { href: "/admin/welfare", icon: Users, label: "Welfare" },
@@ -99,7 +98,7 @@ export function SidebarNav() {
                 className="flex items-center gap-2 font-headline text-lg"
               >
                 <Mountain className="h-6 w-6 text-primary" />
-                <span>Pacha Bhoomi</span>
+                <span>CPI(M) Kaithode</span>
               </Link>
             )}
 
